@@ -8,14 +8,15 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: "#ffd33d",
         headerStyle: {
-          backgroundColor: "#25292e",
+          // backgroundColor: "",
         },
         headerTintColor: "#fff",
         headerShadowVisible: false,
         tabBarStyle: {
-          backgroundColor: "#25292e",
+          // backgroundColor: "",
         },
       }}
+      initialRouteName="economy" // TODO: Remove this line when done with economy tab
     >
       <Tabs.Screen
         name="index"

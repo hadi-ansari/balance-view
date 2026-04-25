@@ -1,5 +1,7 @@
+import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { Button, Input, XStack } from "tamagui";
 import { Expense, useExpenses, useIncome } from "../database/helpers";
 
 export default function EconomyScreen() {
@@ -24,6 +26,11 @@ export default function EconomyScreen() {
     <View style={styles.container}>
       <Text style={styles.text}>Monthly expenses: {totalExpenses}</Text>
       <Text style={styles.text}>Monthly income: {totalIncome}</Text>
+      <Link href="/edit">Go to Edit screen</Link>
+      <XStack style={styles.stack}>
+        <Input theme="surface1" flex={1} size="$4" placeholder={`Amount`} />
+        <Button size="$4">Add</Button>
+      </XStack>
     </View>
   );
 }
@@ -31,11 +38,9 @@ export default function EconomyScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#25292e",
     justifyContent: "center",
     alignItems: "center",
   },
-  text: {
-    color: "#fff",
-  },
+  text: {},
+  stack: {},
 });
