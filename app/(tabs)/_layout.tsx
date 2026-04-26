@@ -16,7 +16,6 @@ export default function TabLayout() {
           // backgroundColor: "",
         },
       }}
-      initialRouteName="economy" // TODO: Remove this line when done with economy tab
     >
       <Tabs.Screen
         name="index"
