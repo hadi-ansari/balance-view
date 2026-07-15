@@ -1,14 +1,13 @@
-import { config } from "@/tamagui.config";
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
 import React, { Suspense } from "react";
-import { TamaguiProvider } from "tamagui";
+import { PaperProvider } from 'react-native-paper';
 import { migrateDb } from "./database/migrate-db";
 
 export default function RootLayout() {
   return (
     <Suspense fallback={<></>}>
-      <TamaguiProvider config={config} defaultTheme="light">
+      <PaperProvider>
         <SQLiteProvider
           databaseName="my-database.db"
           onInit={migrateDb}
@@ -27,7 +26,7 @@ export default function RootLayout() {
             />
           </Stack>
         </SQLiteProvider>
-      </TamaguiProvider>
+      </PaperProvider>
     </Suspense>
   );
 }

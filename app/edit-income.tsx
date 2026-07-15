@@ -4,13 +4,9 @@ import { StyleSheet, View } from "react-native";
 import {
   Button,
   Dialog,
-  Fieldset,
-  Input,
-  Label,
   Text,
-  Unspaced,
-  XStack,
-} from "tamagui";
+  TextInput,
+} from 'react-native-paper';
 import { Income, useIncome } from "./database/helpers";
 
 type FormErrors = {
@@ -98,95 +94,56 @@ export default function EditIncomeScreen() {
         ))}
       </View>
 
-      <Dialog modal open={open} onOpenChange={handleOpenChange}>
-        <Dialog.Trigger asChild>
-          <Button>
-            <Button.Text>Add Income</Button.Text>
-          </Button>
-        </Dialog.Trigger>
+      <Dialog visible={open} onDismiss={() => handleOpenChange(false)}>
+        <Dialog.Title>Add Income</Dialog.Title>
+        <Dialog.Content>
+          {/* Name */}
+          <Text style={styles.label}>Name</Text>
+          <TextInput
+            placeholder="e.g. Monthly salary"
+            value={incomeName}
+            onChangeText={setIncomeName}
+            error={!!incomeErrors.name}
+          />
+          {incomeErrors.name && (
+            <Text style={styles.error}>{incomeErrors.name}</Text>
+          )}
 
-        <Dialog.Portal>
-          <Dialog.Overlay
-            bg="$background"
-            opacity={0.5}
-            animateOnly={["transform", "opacity"]}
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
+          {/* Amount */}
+          <Text style={styles.label}>Amount</Text>
+          <TextInput
+            placeholder="e.g. 500"
+            value={incomeAmount}
+            onChangeText={setIncomeAmount}
+            keyboardType="decimal-pad"
+            error={!!incomeErrors.amount}
+          />
+          {incomeErrors.amount && (
+            <Text style={styles.error}>{incomeErrors.amount}</Text>
+          )}
+
+          {/* Description (optional) */}
+          <Text style={styles.label}>Description (optional)</Text>
+          <TextInput
+            placeholder="e.g. From my company"
+            value={incomeDescription}
+            onChangeText={setIncomeDescription}
           />
 
-          <Dialog.FocusScope focusOnIdle>
-            <Dialog.Content
-              width={"90%"}
-              enterStyle={{ x: 0, y: 20, opacity: 0 }}
-              exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
-              gap="$4"
-            >
-              <Dialog.Title>Add Income</Dialog.Title>
-
-              {/* Name */}
-              <Fieldset gap="$2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  placeholder="e.g. Monthly salary"
-                  value={incomeName}
-                  onChangeText={setIncomeName}
-                  borderColor={incomeErrors.name ? "$red8" : undefined}
-                />
-                {incomeErrors.name && (
-                  <Text color="$red10" fontSize="$2">
-                    {incomeErrors.name}
-                  </Text>
-                )}
-              </Fieldset>
-
-              {/* Amount */}
-              <Fieldset gap="$2">
-                <Label htmlFor="amount">Amount</Label>
-                <Input
-                  id="amount"
-                  placeholder="e.g. 500"
-                  value={incomeAmount}
-                  onChangeText={setIncomeAmount}
-                  keyboardType="decimal-pad"
-                  borderColor={incomeErrors.amount ? "$red8" : undefined}
-                />
-                {incomeErrors.amount && (
-                  <Text color="$red10" fontSize="$2">
-                    {incomeErrors.amount}
-                  </Text>
-                )}
-              </Fieldset>
-
-              {/* Description (optional) */}
-              <Fieldset gap="$2">
-                <Label htmlFor="description">Description (optional)</Label>
-                <Input
-                  id="description"
-                  placeholder="e.g. From my company"
-                  value={incomeDescription}
-                  onChangeText={setIncomeDescription}
-                />
-              </Fieldset>
-
-              <XStack self="flex-end" gap="$4">
-                <Dialog.Close asChild>
-                  <Button theme="gray">Cancel</Button>
-                </Dialog.Close>
-                <Button theme="accent" onPress={handleSave}>
-                  Save
-                </Button>
-              </XStack>
-
-              <Unspaced>
-                <Dialog.Close asChild>
-                  <Button position="absolute" r="$3" size="$2" circular />
-                </Dialog.Close>
-              </Unspaced>
-            </Dialog.Content>
-          </Dialog.FocusScope>
-        </Dialog.Portal>
+          <Dialog.Actions>
+            <Button onPress={() => handleOpenChange(false)}>Cancel</Button>
+            <Button onPress={handleSave}>Save</Button>
+          </Dialog.Actions>
+        </Dialog.Content>
       </Dialog>
+
+      <Button 
+        mode="contained" 
+        onPress={() => setOpen(true)}
+        style={styles.addButton}
+      >
+        Add Income
+      </Button>
     </View>
   );
 }
@@ -199,5 +156,16 @@ const styles = StyleSheet.create({
   list: {
     width: "100%",
     gap: 10,
+  },
+  label: {
+    marginTop: 10,
+    marginBottom: 5,
+  },
+  error: {
+    color: 'red',
+    fontSize: 12,
+  },
+  addButton: {
+    margin: 10,
   },
 });

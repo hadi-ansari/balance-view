@@ -4,13 +4,9 @@ import { StyleSheet, View } from "react-native";
 import {
   Button,
   Dialog,
-  Fieldset,
-  Input,
-  Label,
   Text,
-  Unspaced,
-  XStack,
-} from "tamagui";
+  TextInput
+} from 'react-native-paper';
 import { Expense, useExpenses } from "./database/helpers";
 
 type FormErrors = {
@@ -98,95 +94,55 @@ export default function EditExpensesScreen() {
         ))}
       </View>
 
-      <Dialog modal open={open} onOpenChange={handleOpenChange}>
-        <Dialog.Trigger asChild>
-          <Button>
-            <Button.Text>Add Expense</Button.Text>
-          </Button>
-        </Dialog.Trigger>
-
-        <Dialog.Portal>
-          <Dialog.Overlay
-            bg="$background"
-            opacity={0.5}
-            animateOnly={["transform", "opacity"]}
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-
-          <Dialog.FocusScope focusOnIdle>
-            <Dialog.Content
-              width={"90%"}
-              enterStyle={{ x: 0, y: 20, opacity: 0 }}
-              exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
-              gap="$4"
-            >
+      <Dialog visible={open} onDismiss={() => handleOpenChange(false)}>
               <Dialog.Title>Add Expense</Dialog.Title>
-
+        <Dialog.Content>
               {/* Name */}
-              <Fieldset gap="$2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
+          <Text style={styles.label}>Name</Text>
+          <TextInput
                   placeholder="e.g. Electricity bill"
                   value={expenseName}
                   onChangeText={setExpenseName}
-                  borderColor={expenseErrors.name ? "$red8" : undefined}
+            error={!!expenseErrors.name}
                 />
-                {expenseErrors.name && (
-                  <Text color="$red10" fontSize="$2">
-                    {expenseErrors.name}
-                  </Text>
+          {expenseErrors.name && (
+            <Text style={styles.error}>{expenseErrors.name}</Text>
                 )}
-              </Fieldset>
 
-              {/* Amount */}
-              <Fieldset gap="$2">
-                <Label htmlFor="amount">Amount</Label>
-                <Input
-                  id="amount"
-                  placeholder="e.g. 500"
-                  value={expenseAmount}
-                  onChangeText={setExpenseAmount}
-                  keyboardType="decimal-pad"
-                  borderColor={expenseErrors.amount ? "$red8" : undefined}
+          {/* Amount */}
+          <Text style={styles.label}>Amount</Text>
+          <TextInput
+            placeholder="e.g. 500"
+            value={expenseAmount}
+            onChangeText={setExpenseAmount}
+            keyboardType="decimal-pad"
+            error={!!expenseErrors.amount}
                 />
-                {expenseErrors.amount && (
-                  <Text color="$red10" fontSize="$2">
-                    {expenseErrors.amount}
-                  </Text>
-                )}
-              </Fieldset>
+          {expenseErrors.amount && (
+            <Text style={styles.error}>{expenseErrors.amount}</Text>
+          )}
 
-              {/* Description (optional) */}
-              <Fieldset gap="$2">
-                <Label htmlFor="description">Description (optional)</Label>
-                <Input
-                  id="description"
-                  placeholder="e.g. January bill"
-                  value={expenseDescription}
-                  onChangeText={setExpenseDescription}
-                />
-              </Fieldset>
+          {/* Description (optional) */}
+          <Text style={styles.label}>Description (optional)</Text>
+          <TextInput
+            placeholder="e.g. January bill"
+            value={expenseDescription}
+            onChangeText={setExpenseDescription}
+          />
 
-              <XStack self="flex-end" gap="$4">
-                <Dialog.Close asChild>
-                  <Button theme="gray">Cancel</Button>
-                </Dialog.Close>
-                <Button theme="accent" onPress={handleSave}>
-                  Save
-                </Button>
-              </XStack>
-
-              <Unspaced>
-                <Dialog.Close asChild>
-                  <Button position="absolute" r="$3" size="$2" circular />
-                </Dialog.Close>
-              </Unspaced>
+          <Dialog.Actions>
+            <Button onPress={() => handleOpenChange(false)}>Cancel</Button>
+            <Button onPress={handleSave}>Save</Button>
+          </Dialog.Actions>
             </Dialog.Content>
-          </Dialog.FocusScope>
-        </Dialog.Portal>
       </Dialog>
+      <Button
+        mode="contained"
+        onPress={() => setOpen(true)}
+        style={styles.addButton}
+      >
+        Add Expense
+      </Button>
     </View>
   );
 }
@@ -200,4 +156,16 @@ const styles = StyleSheet.create({
     width: "100%",
     gap: 10,
   },
+  label: {
+    marginTop: 10,
+    marginBottom: 5,
+  },
+  error: {
+    color: 'red',
+    fontSize: 12,
+  },
+  addButton: {
+    margin: 10,
+  },
 });
+
