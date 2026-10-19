@@ -1,17 +1,32 @@
 import { Expense } from "@/app/database/helpers";
 import { StyleSheet, View } from "react-native";
-import { Card, Text } from 'react-native-paper';
+import { Card, IconButton, Text, useTheme } from "react-native-paper";
 
 type Props = {
   expense: Expense;
+  onDelete?: () => void;
 };
 
-export default function ExpenseCard({ expense }: Props) {
+export default function ExpenseCard({ expense, onDelete }: Props) {
+  const theme = useTheme();
+
   return (
     <Card style={styles.card} elevation={1}>
-      <Card.Title 
-        title={expense.name} 
+      <Card.Title
+        title={expense.name}
         titleStyle={styles.title}
+        right={
+          onDelete
+            ? () => (
+                <IconButton
+                  accessibilityLabel={`Delete ${expense.name}`}
+                  icon="delete-outline"
+                  iconColor={theme.colors.error}
+                  onPress={onDelete}
+                />
+              )
+            : undefined
+        }
       />
       <Card.Content>
         <View style={styles.view}>
@@ -37,6 +52,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   amount: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
