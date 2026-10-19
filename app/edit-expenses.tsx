@@ -1,4 +1,4 @@
-import ExpenseCard from "@/components/ExpenseCard";
+import FinancialEntryCard from "@/components/FinancialEntryCard";
 import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
@@ -127,8 +127,8 @@ export default function EditExpensesScreen() {
           </View>
         ) : (
           expenses?.map((expense) => (
-            <ExpenseCard
-              expense={expense}
+            <FinancialEntryCard
+              entry={expense}
               key={expense.id}
               onDelete={() => setExpenseToDelete(expense)}
             />
