@@ -1,4 +1,5 @@
 // lib/db.ts
+import { useCallback } from "react";
 import { useSQLiteContext } from "expo-sqlite";
 
 export type Expense = {
@@ -20,24 +21,24 @@ export type Income = {
 export function useExpenses() {
   const db = useSQLiteContext();
 
-  async function getAll() {
+  const getAll = useCallback(async () => {
     return await db.getAllAsync<Expense>(
       "SELECT * FROM expenses ORDER BY created_at DESC",
     );
-  }
+  }, [db]);
 
-  async function insert(name: string, amount: number, description?: string) {
+  const insert = useCallback(async (name: string, amount: number, description?: string) => {
     await db.runAsync(
       "INSERT INTO expenses (name, amount, description) VALUES (?, ?, ?)",
       name,
       amount,
       description ?? null,
     );
-  }
+  }, [db]);
 
-  async function remove(id: number) {
+  const remove = useCallback(async (id: number) => {
     await db.runAsync("DELETE FROM expenses WHERE id = ?", id);
-  }
+  }, [db]);
 
   return { getAll, insert, remove };
 }
@@ -45,24 +46,24 @@ export function useExpenses() {
 export function useIncome() {
   const db = useSQLiteContext();
 
-  async function getAll() {
+  const getAll = useCallback(async () => {
     return await db.getAllAsync<Income>(
       "SELECT * FROM income ORDER BY created_at DESC",
     );
-  }
+  }, [db]);
 
-  async function insert(name: string, amount: number, description?: string) {
+  const insert = useCallback(async (name: string, amount: number, description?: string) => {
     await db.runAsync(
       "INSERT INTO income (name, amount, description) VALUES (?, ?, ?)",
       name,
       amount,
       description ?? null,
     );
-  }
+  }, [db]);
 
-  async function remove(id: number) {
+  const remove = useCallback(async (id: number) => {
     await db.runAsync("DELETE FROM income WHERE id = ?", id);
-  }
+  }, [db]);
 
   return { getAll, insert, remove };
 }
