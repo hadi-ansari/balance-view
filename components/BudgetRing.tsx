@@ -1,3 +1,4 @@
+import { getSemanticColors } from "@/theme/appTheme";
 import { StyleSheet, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import Svg, { Circle } from "react-native-svg";
@@ -9,7 +10,6 @@ type BudgetRingProps = {
 };
 
 const STROKE_WIDTH = 22;
-export const BUDGET_REMAINING_COLOR = "#2E7D32";
 
 function formatAmount(value: number) {
   return new Intl.NumberFormat(undefined, {
@@ -23,6 +23,7 @@ export default function BudgetRing({
   size = 236,
 }: BudgetRingProps) {
   const theme = useTheme();
+  const semanticColors = getSemanticColors(theme.dark);
   const safeIncome = Number.isFinite(income) ? Math.max(0, income) : 0;
   const safeExpenses = Number.isFinite(expenses) ? Math.max(0, expenses) : 0;
   const balance = safeIncome - safeExpenses;
@@ -40,8 +41,8 @@ export default function BudgetRing({
   const radius = (size - STROKE_WIDTH) / 2;
   const circumference = 2 * Math.PI * radius;
   const expenseArcLength = circumference * spentRatio;
-  const remainingColor = BUDGET_REMAINING_COLOR;
-  const expenseColor = theme.colors.error;
+  const remainingColor = semanticColors.remaining;
+  const expenseColor = semanticColors.expense;
   const baseColor = hasIncome
     ? remainingColor
     : theme.colors.surfaceVariant;

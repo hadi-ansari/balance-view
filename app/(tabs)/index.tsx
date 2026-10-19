@@ -1,8 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Text, useTheme } from "react-native-paper";
 
 export default function Index() {
+  const theme = useTheme();
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
       <Text>Placeholder</Text>
     </View>
   );

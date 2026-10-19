@@ -157,7 +157,9 @@ export default function EditExpensesScreen() {
               error={!!expenseErrors.name}
             />
             {expenseErrors.name && (
-              <Text style={styles.error}>{expenseErrors.name}</Text>
+              <Text style={[styles.error, { color: theme.colors.error }]}>
+                {expenseErrors.name}
+              </Text>
             )}
 
             <Text style={styles.label}>Amount</Text>
@@ -169,7 +171,9 @@ export default function EditExpensesScreen() {
               error={!!expenseErrors.amount}
             />
             {expenseErrors.amount && (
-              <Text style={styles.error}>{expenseErrors.amount}</Text>
+              <Text style={[styles.error, { color: theme.colors.error }]}>
+                {expenseErrors.amount}
+              </Text>
             )}
 
             <Text style={styles.label}>Description (optional)</Text>
@@ -249,7 +253,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   error: {
-    color: "red",
     fontSize: 12,
   },
   addButton: {

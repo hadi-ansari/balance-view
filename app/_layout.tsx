@@ -1,31 +1,42 @@
+import { darkAppTheme, darkNavigationTheme, lightAppTheme, lightNavigationTheme } from "@/theme/appTheme";
+import { ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
+import { StatusBar } from "expo-status-bar";
 import React, { Suspense } from "react";
-import { PaperProvider } from 'react-native-paper';
+import { useColorScheme } from "react-native";
+import { PaperProvider } from "react-native-paper";
 import { migrateDb } from "./database/migrate-db";
 
 export default function RootLayout() {
+  const isDark = useColorScheme() === "dark";
+  const paperTheme = isDark ? darkAppTheme : lightAppTheme;
+  const navigationTheme = isDark ? darkNavigationTheme : lightNavigationTheme;
+
   return (
     <Suspense fallback={<></>}>
-      <PaperProvider>
-        <SQLiteProvider
-          databaseName="my-database.db"
-          onInit={migrateDb}
-          useSuspense
-        >
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="edit" options={{ title: "Edit" }} />
-            <Stack.Screen
-              name="edit-expenses"
-              options={{ title: "Edit expenses" }}
-            />
-            <Stack.Screen
-              name="edit-income"
-              options={{ title: "Edit income" }}
-            />
-          </Stack>
-        </SQLiteProvider>
+      <PaperProvider theme={paperTheme}>
+        <ThemeProvider value={navigationTheme}>
+          <SQLiteProvider
+            databaseName="my-database.db"
+            onInit={migrateDb}
+            useSuspense
+          >
+            <StatusBar style={isDark ? "light" : "dark"} />
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="edit" options={{ title: "Edit" }} />
+              <Stack.Screen
+                name="edit-expenses"
+                options={{ title: "Edit expenses" }}
+              />
+              <Stack.Screen
+                name="edit-income"
+                options={{ title: "Edit income" }}
+              />
+            </Stack>
+          </SQLiteProvider>
+        </ThemeProvider>
       </PaperProvider>
     </Suspense>
   );

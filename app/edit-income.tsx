@@ -157,7 +157,9 @@ export default function EditIncomeScreen() {
               error={!!incomeErrors.name}
             />
             {incomeErrors.name && (
-              <Text style={styles.error}>{incomeErrors.name}</Text>
+              <Text style={[styles.error, { color: theme.colors.error }]}>
+                {incomeErrors.name}
+              </Text>
             )}
 
             <Text style={styles.label}>Amount</Text>
@@ -169,7 +171,9 @@ export default function EditIncomeScreen() {
               error={!!incomeErrors.amount}
             />
             {incomeErrors.amount && (
-              <Text style={styles.error}>{incomeErrors.amount}</Text>
+              <Text style={[styles.error, { color: theme.colors.error }]}>
+                {incomeErrors.amount}
+              </Text>
             )}
 
             <Text style={styles.label}>Description (optional)</Text>
@@ -249,7 +253,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   error: {
-    color: "red",
     fontSize: 12,
   },
   addButton: {

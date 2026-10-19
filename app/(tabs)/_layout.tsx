@@ -1,19 +1,24 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
+import { useTheme } from "react-native-paper";
 
 export default function TabLayout() {
+  const theme = useTheme();
+
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#ffd33d",
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
         headerStyle: {
-          // backgroundColor: "",
+          backgroundColor: theme.colors.surface,
         },
-        headerTintColor: "#fff",
+        headerTintColor: theme.colors.onSurface,
         headerShadowVisible: false,
         tabBarStyle: {
-          // backgroundColor: "",
+          backgroundColor: theme.colors.surface,
+          borderTopColor: theme.colors.outlineVariant,
         },
       }}
     >

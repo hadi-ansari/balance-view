@@ -1,4 +1,5 @@
-import BudgetRing, { BUDGET_REMAINING_COLOR } from "@/components/BudgetRing";
+import BudgetRing from "@/components/BudgetRing";
+import { getSemanticColors } from "@/theme/appTheme";
 import { Link, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -15,6 +16,7 @@ export default function EconomyScreen() {
   const { getAll: getAllExpenses } = useExpenses();
   const { getAll: getAllIncome } = useIncome();
   const theme = useTheme();
+  const semanticColors = getSemanticColors(theme.dark);
 
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
@@ -83,7 +85,7 @@ export default function EconomyScreen() {
                   <View
                     style={[
                       styles.legendDot,
-                      { backgroundColor: theme.colors.error },
+                      { backgroundColor: semanticColors.expense },
                     ]}
                   />
                   <Text variant="bodySmall">Spent</Text>
@@ -92,7 +94,7 @@ export default function EconomyScreen() {
                   <View
                     style={[
                       styles.legendDot,
-                      { backgroundColor: BUDGET_REMAINING_COLOR },
+                      { backgroundColor: semanticColors.remaining },
                     ]}
                   />
                   <Text variant="bodySmall">Remaining</Text>
@@ -125,7 +127,10 @@ export default function EconomyScreen() {
             >
               Expenses
             </Text>
-            <Text style={{ color: theme.colors.error }} variant="titleLarge">
+            <Text
+              style={{ color: semanticColors.expense }}
+              variant="titleLarge"
+            >
               {isLoading ? "—" : formatAmount(totalExpenses)}
             </Text>
           </Card.Content>
