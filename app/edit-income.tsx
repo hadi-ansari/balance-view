@@ -129,6 +129,7 @@ export default function EditIncomeScreen() {
           income?.map((item) => (
             <FinancialEntryCard
               entry={item}
+              kind="income"
               key={item.id}
               onDelete={() => setIncomeToDelete(item)}
             />

@@ -129,9 +129,9 @@ export default function EditExpensesScreen() {
           expenses?.map((expense) => (
             <FinancialEntryCard
               entry={expense}
+              kind="expense"
               key={expense.id}
               onDelete={() => setExpenseToDelete(expense)}
-              tone="expense"
             />
           ))
         )}
