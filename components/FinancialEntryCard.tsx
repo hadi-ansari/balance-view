@@ -10,16 +10,31 @@ type FinancialEntry = {
 type Props = {
   entry: FinancialEntry;
   onDelete?: () => void;
+  tone?: "default" | "expense";
 };
 
-export default function FinancialEntryCard({ entry, onDelete }: Props) {
+export default function FinancialEntryCard({
+  entry,
+  onDelete,
+  tone = "default",
+}: Props) {
   const theme = useTheme();
+  const isExpense = tone === "expense";
+  const expenseTextStyle = isExpense
+    ? { color: theme.colors.onErrorContainer }
+    : undefined;
 
   return (
-    <Card style={styles.card} elevation={1}>
+    <Card
+      style={[
+        styles.card,
+        isExpense && { backgroundColor: theme.colors.errorContainer },
+      ]}
+      elevation={1}
+    >
       <Card.Title
         title={entry.name}
-        titleStyle={styles.title}
+        titleStyle={[styles.title, expenseTextStyle]}
         right={
           onDelete
             ? () => (
@@ -35,8 +50,8 @@ export default function FinancialEntryCard({ entry, onDelete }: Props) {
       />
       <Card.Content>
         <View style={styles.view}>
-          <Text>{entry.description}</Text>
-          <Text style={styles.amount}>{entry.amount}</Text>
+          <Text style={expenseTextStyle}>{entry.description}</Text>
+          <Text style={[styles.amount, expenseTextStyle]}>{entry.amount}</Text>
         </View>
       </Card.Content>
     </Card>

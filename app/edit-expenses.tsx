@@ -131,6 +131,7 @@ export default function EditExpensesScreen() {
               entry={expense}
               key={expense.id}
               onDelete={() => setExpenseToDelete(expense)}
+              tone="expense"
             />
           ))
         )}
