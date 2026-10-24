@@ -1,4 +1,5 @@
 import BudgetRing from "@/components/BudgetRing";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { getSemanticColors } from "@/theme/appTheme";
 import { Link, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
@@ -6,17 +7,11 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { ActivityIndicator, Button, Card, Text, useTheme } from "react-native-paper";
 import { useExpenses, useIncome } from "../database/helpers";
 
-
-function formatAmount(value: number) {
-  return new Intl.NumberFormat(undefined, {
-    maximumFractionDigits: 2,
-  }).format(value);
-}
-
 export default function  Index() {
   const { getAll: getAllExpenses } = useExpenses();
   const { getAll: getAllIncome } = useIncome();
   const theme = useTheme();
+  const { formatCurrency } = useCurrency();
   const semanticColors = getSemanticColors(theme.dark);
 
   const [totalExpenses, setTotalExpenses] = useState(0);
@@ -116,7 +111,7 @@ export default function  Index() {
               Income
             </Text>
             <Text variant="titleLarge">
-              {isLoading ? "—" : formatAmount(totalIncome)}
+              {isLoading ? "—" : formatCurrency(totalIncome)}
             </Text>
           </Card.Content>
         </Card>
@@ -132,7 +127,7 @@ export default function  Index() {
               style={{ color: semanticColors.expense }}
               variant="titleLarge"
             >
-              {isLoading ? "—" : formatAmount(totalExpenses)}
+              {isLoading ? "—" : formatCurrency(totalExpenses)}
             </Text>
           </Card.Content>
         </Card>

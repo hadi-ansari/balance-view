@@ -1,4 +1,5 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { getSemanticColors } from "@/theme/appTheme";
 import { StyleSheet, View } from "react-native";
 import { Card, IconButton, Text, useTheme } from "react-native-paper";
@@ -21,6 +22,7 @@ export default function FinancialEntryCard({
   onDelete,
 }: Props) {
   const theme = useTheme();
+  const { formatCurrency } = useCurrency();
   const semanticColors = getSemanticColors(theme.dark);
   const isExpense = kind === "expense";
   const amountColor = isExpense
@@ -32,9 +34,10 @@ export default function FinancialEntryCard({
   const iconColor = isExpense
     ? theme.colors.onError
     : theme.colors.onPrimaryContainer;
-  const formattedAmount = new Intl.NumberFormat(undefined, {
-    maximumFractionDigits: 2,
-  }).format(Math.abs(entry.amount));
+  const formattedAmount = formatCurrency(
+    isExpense ? -Math.abs(entry.amount) : Math.abs(entry.amount),
+    { showSign: true },
+  );
 
   return (
     <Card
@@ -85,7 +88,6 @@ export default function FinancialEntryCard({
             style={[styles.amount, { color: amountColor }]}
             variant="titleLarge"
           >
-            {isExpense ? "−" : "+"}
             {formattedAmount}
           </Text>
           {onDelete ? (

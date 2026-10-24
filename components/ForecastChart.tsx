@@ -1,3 +1,4 @@
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { getSemanticColors } from "@/theme/appTheme";
 import { StyleSheet, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
@@ -19,18 +20,13 @@ type ForecastChartProps = {
 const CHART_HEIGHT = 190;
 const PADDING = { top: 18, right: 14, bottom: 10, left: 14 };
 
-function formatAmount(value: number) {
-  return new Intl.NumberFormat(undefined, {
-    maximumFractionDigits: 2,
-  }).format(Math.abs(value));
-}
-
 export default function ForecastChart({
   monthlyBalance,
   width,
   years,
 }: ForecastChartProps) {
   const theme = useTheme();
+  const { formatCurrency } = useCurrency();
   const semanticColors = getSemanticColors(theme.dark);
   const projectedAmount = monthlyBalance * years * 12;
   const isPositive = projectedAmount > 0;
@@ -54,7 +50,7 @@ export default function ForecastChart({
     : isNegative
       ? "shortfall"
       : "balance";
-  const signedAmount = `${isPositive ? "+" : isNegative ? "−" : ""}${formatAmount(projectedAmount)}`;
+  const signedAmount = formatCurrency(projectedAmount, { showSign: true });
 
   return (
     <View

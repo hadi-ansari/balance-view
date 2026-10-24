@@ -1,3 +1,4 @@
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { darkAppTheme, darkNavigationTheme, lightAppTheme, lightNavigationTheme } from "@/theme/appTheme";
 import { ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
@@ -22,19 +23,21 @@ export default function RootLayout() {
             onInit={migrateDb}
             useSuspense
           >
-            <StatusBar style={isDark ? "light" : "dark"} />
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="edit" options={{ title: "Edit" }} />
-              <Stack.Screen
-                name="edit-expenses"
-                options={{ title: "Edit expenses" }}
-              />
-              <Stack.Screen
-                name="edit-income"
-                options={{ title: "Edit income" }}
-              />
-            </Stack>
+            <CurrencyProvider>
+              <StatusBar style={isDark ? "light" : "dark"} />
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="edit" options={{ title: "Edit" }} />
+                <Stack.Screen
+                  name="edit-expenses"
+                  options={{ title: "Edit expenses" }}
+                />
+                <Stack.Screen
+                  name="edit-income"
+                  options={{ title: "Edit income" }}
+                />
+              </Stack>
+            </CurrencyProvider>
           </SQLiteProvider>
         </ThemeProvider>
       </PaperProvider>

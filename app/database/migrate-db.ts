@@ -17,5 +17,12 @@ export async function migrateDb(db: SQLiteDatabase) {
       description TEXT,
       created_at  INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
     );
+
+    CREATE TABLE IF NOT EXISTS settings (
+      key   TEXT PRIMARY KEY NOT NULL,
+      value TEXT NOT NULL
+    );
+
+    INSERT OR IGNORE INTO settings (key, value) VALUES ('currency', 'SEK');
   `);
 }

@@ -1,4 +1,5 @@
 import FinancialEntryCard from "@/components/FinancialEntryCard";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
@@ -20,6 +21,7 @@ type FormErrors = {
 export default function EditIncomeScreen() {
   const { getAll, insert, remove } = useIncome();
   const theme = useTheme();
+  const { currencySymbol } = useCurrency();
   const [income, setIncome] = useState<Income[]>();
   const [open, setOpen] = useState<boolean>(false);
   const [incomeToDelete, setIncomeToDelete] = useState<Income | null>(null);
@@ -170,6 +172,7 @@ export default function EditIncomeScreen() {
               onChangeText={setIncomeAmount}
               keyboardType="decimal-pad"
               error={!!incomeErrors.amount}
+              right={<TextInput.Affix text={currencySymbol} />}
             />
             {incomeErrors.amount && (
               <Text style={[styles.error, { color: theme.colors.error }]}>

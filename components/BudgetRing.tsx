@@ -1,3 +1,4 @@
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { getSemanticColors } from "@/theme/appTheme";
 import { StyleSheet, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
@@ -11,18 +12,13 @@ type BudgetRingProps = {
 
 const STROKE_WIDTH = 22;
 
-function formatAmount(value: number) {
-  return new Intl.NumberFormat(undefined, {
-    maximumFractionDigits: 2,
-  }).format(value);
-}
-
 export default function BudgetRing({
   expenses,
   income,
   size = 236,
 }: BudgetRingProps) {
   const theme = useTheme();
+  const { formatCurrency } = useCurrency();
   const semanticColors = getSemanticColors(theme.dark);
   const safeIncome = Number.isFinite(income) ? Math.max(0, income) : 0;
   const safeExpenses = Number.isFinite(expenses) ? Math.max(0, expenses) : 0;
@@ -47,13 +43,13 @@ export default function BudgetRing({
     ? remainingColor
     : theme.colors.surfaceVariant;
 
-  const amountLabel = formatAmount(Math.abs(balance));
+  const amountLabel = formatCurrency(Math.abs(balance));
   const statusLabel = isOverBudget
     ? "over budget"
     : hasIncome
       ? "left this month"
       : "available";
-  const accessibilityLabel = `Monthly income ${formatAmount(safeIncome)}. Monthly expenses ${formatAmount(safeExpenses)}. ${amountLabel} ${statusLabel}.`;
+  const accessibilityLabel = `Monthly income ${formatCurrency(safeIncome)}. Monthly expenses ${formatCurrency(safeExpenses)}. ${amountLabel} ${statusLabel}.`;
 
   return (
     <View

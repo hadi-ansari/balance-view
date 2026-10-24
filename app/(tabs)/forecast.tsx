@@ -1,4 +1,5 @@
 import ForecastChart from "@/components/ForecastChart";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { getSemanticColors } from "@/theme/appTheme";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Link, useFocusEffect } from "expo-router";
@@ -23,22 +24,12 @@ import { useExpenses, useIncome } from "../database/helpers";
 const HORIZONS = [1, 3, 5, 10] as const;
 const MILESTONES = [1, 5, 10] as const;
 
-function formatAmount(value: number) {
-  return new Intl.NumberFormat(undefined, {
-    maximumFractionDigits: 2,
-  }).format(Math.abs(value));
-}
-
-function formatSignedAmount(value: number) {
-  const prefix = value > 0 ? "+" : value < 0 ? "−" : "";
-  return `${prefix}${formatAmount(value)}`;
-}
-
 export default function Forecast() {
   const { getAll: getAllExpenses } = useExpenses();
   const { getAll: getAllIncome } = useIncome();
   const { width: windowWidth } = useWindowDimensions();
   const theme = useTheme();
+  const { formatCurrency } = useCurrency();
   const semanticColors = getSemanticColors(theme.dark);
 
   const [selectedYears, setSelectedYears] = useState(1);
@@ -216,7 +207,7 @@ export default function Forecast() {
             numberOfLines={1}
             style={[styles.projectedAmount, { color: projectionColor }]}
           >
-            {formatSignedAmount(projectedAmount)}
+            {formatCurrency(projectedAmount, { showSign: true })}
           </Text>
           <Text
             style={{ color: theme.colors.onSurfaceVariant }}
@@ -241,7 +232,7 @@ export default function Forecast() {
               style={[styles.monthlyResultText, { color: monthlyContentColor }]}
               variant="labelLarge"
             >
-              {formatSignedAmount(monthlyBalance)} / month
+              {formatCurrency(monthlyBalance, { showSign: true })} / month
             </Text>
           </Surface>
         </Card.Content>
@@ -334,7 +325,7 @@ export default function Forecast() {
                   style={[styles.milestoneAmount, { color }]}
                   variant="titleMedium"
                 >
-                  {formatSignedAmount(amount)}
+                  {formatCurrency(amount, { showSign: true })}
                 </Text>
               </Surface>
             );

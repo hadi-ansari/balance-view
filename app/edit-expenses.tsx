@@ -1,4 +1,5 @@
 import FinancialEntryCard from "@/components/FinancialEntryCard";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
@@ -20,6 +21,7 @@ type FormErrors = {
 export default function EditExpensesScreen() {
   const { getAll, insert, remove } = useExpenses();
   const theme = useTheme();
+  const { currencySymbol } = useCurrency();
   const [expenses, setExpenses] = useState<Expense[]>();
   const [open, setOpen] = useState<boolean>(false);
   const [expenseToDelete, setExpenseToDelete] = useState<Expense | null>(null);
@@ -170,6 +172,7 @@ export default function EditExpensesScreen() {
               onChangeText={setExpenseAmount}
               keyboardType="decimal-pad"
               error={!!expenseErrors.amount}
+              right={<TextInput.Affix text={currencySymbol} />}
             />
             {expenseErrors.amount && (
               <Text style={[styles.error, { color: theme.colors.error }]}>
