@@ -36,11 +36,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="economy"
+        name="forecast"
         options={{
-          title: "Economy",
-          tabBarIcon: ({ color, focused }) => (
-            <AntDesign name="monitor" color={color} size={24} />
+          title: "Forecast",
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="line-chart" color={color} size={24} />
           ),
         }}
       />
